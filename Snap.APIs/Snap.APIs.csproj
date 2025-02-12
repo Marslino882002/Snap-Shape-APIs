@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Snap.Repository\Snap.Repository.csproj" />
+    <ProjectReference Include="..\Snap.Service\Snap.Service.csproj" />
   </ItemGroup>
 
 </Project>

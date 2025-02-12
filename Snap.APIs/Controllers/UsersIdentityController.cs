@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Snap.APIs.DTOs;
 using Snap.APIs.Errors;
 using Snap.Core.Entities;
+using Snap.Core.Services;
 
 namespace Snap.APIs.Controllers
 {
@@ -14,11 +15,15 @@ namespace Snap.APIs.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ITokenService _tokenService;
 
-        public UsersIdentityController(UserManager<User>userManager , SignInManager<User> signInManager)
+        public UsersIdentityController(UserManager<User>userManager ,
+            SignInManager<User> signInManager , 
+            ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
         }
 
 
@@ -41,9 +46,11 @@ namespace Snap.APIs.Controllers
             if (!result.Succeeded) { return BadRequest(new ApiResponse(400)); }
 
             var ReturnedUser = new UserDto()
-            {DispalyName=user.DispalyName,
-            Email = user.Email,
-            Token ="DHELTokenYastaa"};
+            {
+                DispalyName = user.DispalyName,
+                Email = user.Email,
+                Token = await _tokenService.CreateTokenAsync(user , _userManager)
+            };
 
             return Ok(ReturnedUser);
         }
@@ -63,7 +70,7 @@ namespace Snap.APIs.Controllers
           new UserDto() {
               DispalyName = User.DispalyName,
               Email = User.Email,
-              Token = "DHELTokenYastaa"
+              Token = await _tokenService.CreateTokenAsync(User, _userManager)
           }
                 
                 
