@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using EntityFrameworkCore.EncryptColumn.Extension;
+using EntityFrameworkCore.EncryptColumn.Interfaces;
+using EntityFrameworkCore.EncryptColumn.Util;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Snap.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,23 +17,39 @@ namespace Snap.Repository.Data
     public class SnapDbContext: IdentityDbContext<User>
     {
 
-        public SnapDbContext(DbContextOptions<SnapDbContext>options) : base(options)
+        //private readonly IEncryptionProvider encryption;
+
+
+        public SnapDbContext()
         {
             
         }
+        public SnapDbContext(DbContextOptions<SnapDbContext>options ) : base(options)
+        {
 
+         //   encryption = new GenerateEncryptionProvider("8a4dcaaec64d412380fe4b02193cd26f");
+            
+
+
+           
+
+        }
+// DbSet properties for each entity
+        public DbSet<User> Users { get; set; }
+        public DbSet<About> Abouts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        {   
             base.OnModelCreating(modelBuilder);
 
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+           // modelBuilder.UseEncryption(encryption);
         }
 
 
- // DbSet properties for each entity
-        public DbSet<User> Users { get; set; }
-        public DbSet<About> Abouts { get; set; }
+ 
 
 
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using EntityFrameworkCore.EncryptColumn.Attribute;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Snap.Core.Entities
     {
         public string DispalyName { get; set; }
         // Navigation property to About (1:1)
+        [EncryptColumn]
+        public string? OTP { get; set; }
         public About about { get; set; }
     }
 }

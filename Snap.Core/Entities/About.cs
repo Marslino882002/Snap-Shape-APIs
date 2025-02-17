@@ -1,4 +1,4 @@
-﻿using Snap.Core.Enums;
+﻿using Snap.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

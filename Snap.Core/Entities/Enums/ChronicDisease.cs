@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Snap.Core.Enums
+namespace Snap.Core.Entities.Enums
 {
-    public enum PreferrelFoodType
+    public enum ChronicDisease
     {
-        Standard,
-        Vegetarian,
-        Vegan,
-        GlutenFree
+        None,
+        Diabetes,
+        HeartDisease,
+        Cancer
     }
 }

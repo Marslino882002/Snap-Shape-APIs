@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +10,8 @@ using Snap.APIs.Middlewares;
 using Snap.Core.Entities;
 using Snap.Repository.Data;
 using Snap.Repository.Seeders;
+using MediatR;
+using Snap.Core.Email.Commands.SendEmail; // Import for MediatR
 
 namespace Snap.APIs
 {
@@ -30,19 +32,30 @@ namespace Snap.APIs
             // Configure Identity Services
             builder.Services.AddIdentityServices();
 
+            // ✅ Add MediatR
+            builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SendEmailCommand>());
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<ApiBehaviorOptions>(
-             Options =>{Options
-                .InvalidModelStateResponseFactory = (actionContext) =>
-            {var errors = actionContext.ModelState
-                .Where(p => p.Value.Errors.Count() > 0)
-                .SelectMany(p => p.Value.Errors)
-                .Select(E => E.ErrorMessage)
-                .ToArray();
-            var ValidationErrorResponse = new ApiValidationErrorResponse() 
-             { Erorrs = errors};
-                return new BadRequestObjectResult(ValidationErrorResponse);};});
+                options => {
+                    options.InvalidModelStateResponseFactory = (actionContext) =>
+                    {
+                        var errors = actionContext.ModelState
+                            .Where(p => p.Value.Errors.Count() > 0)
+                            .SelectMany(p => p.Value.Errors)
+                            .Select(e => e.ErrorMessage)
+                            .ToArray();
+                        var validationErrorResponse = new ApiValidationErrorResponse()
+                        { Erorrs = errors };
+                        return new BadRequestObjectResult(validationErrorResponse);
+                    };
+                });
+
+            #region DI
+            builder.Services.AddMailServices();
+            #endregion
+
             var app = builder.Build();
 
             #region Apply Migrations and Seed Data
@@ -78,14 +91,14 @@ namespace Snap.APIs
             if (app.Environment.IsDevelopment())
             {
                 app.UseMiddleware<ExceptionMiddleware>();
-                app.UseDeveloperExceptionPage();    
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
 
-            app.UseAuthentication(); 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
 
