@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="About\Commands\Create\" />
     <Folder Include="Email\Queries\" />
-    <Folder Include="About\" />
   </ItemGroup>
 
 </Project>

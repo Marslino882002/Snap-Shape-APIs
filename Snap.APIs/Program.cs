@@ -20,7 +20,6 @@ namespace Snap.APIs
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
             // Add services to the container.
             builder.Services.AddControllers();
 
@@ -31,6 +30,8 @@ namespace Snap.APIs
 
             // Configure Identity Services
             builder.Services.AddIdentityServices();
+            builder.Services.AddAboutServices();
+
 
             // ✅ Add MediatR
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SendEmailCommand>());
