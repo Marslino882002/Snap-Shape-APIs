@@ -11,7 +11,8 @@ using Snap.Core.Entities;
 using Snap.Repository.Data;
 using Snap.Repository.Seeders;
 using MediatR;
-using Snap.Core.Email.Commands.SendEmail; // Import for MediatR
+using Snap.Core.Email.Commands.SendEmail;
+using System.Reflection; // Import for MediatR
 
 namespace Snap.APIs
 {
@@ -35,7 +36,7 @@ namespace Snap.APIs
 
             // ✅ Add MediatR
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SendEmailCommand>());
-
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<ApiBehaviorOptions>(

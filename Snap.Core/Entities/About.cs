@@ -9,11 +9,12 @@ namespace Snap.Core.Entities
 {
     public class About
     { public int Id { get; set; }
-        public string Gender { get; set; }
         public int Age { get; set; }
         public int Tall { get; set; }
         public float CurrentWeight { get; set; }
-        public float GoalWeight { get; set; }
+        public float GoalWeight { get; set; }        
+        public Gender Gender { get; set; }
+
         public PreferrelFoodType PreferrelFood { get; set; }
         public MealFrequency DailyMeals { get; set; }
         public ChronicDisease ChronicDiseases { get; set; }

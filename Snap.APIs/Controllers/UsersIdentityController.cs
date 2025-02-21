@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Snap.APIs.DTOs;
+using Snap.Core.DTOs;
 using Snap.APIs.Errors;
 using Snap.Core.Entities;
 using Snap.Core.Services;

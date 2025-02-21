@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Snap.Core.Entities;
+using Snap.Core.Entities.Enums;
 using Snap.Core.Repositories;
 using Snap.Repository.Data;
 using System;
@@ -13,72 +14,56 @@ namespace Snap.Service.Repositories
 {
     public class AboutRepository(SnapDbContext dbContext, UserManager<User> userManager) : IAboutRepository
     {
-        public async Task<bool> CreateOrUpdateAbout(About about)
+        public async Task<About> CreateAsync(About about)
         {
-
-
-
-            var user = await userManager.FindByIdAsync(about.UserId);
-            if (user == null) return false;
-
-            var Newabout = await dbContext.Abouts.FirstOrDefaultAsync(a => a.UserId == about.UserId);
-
-            if (about == null) 
-            {
-                Newabout = new About
-            {
-                UserId = about.UserId,
-                Gender = about.Gender,
-                Age = about.Age,
-                Tall = about.Tall,
-                CurrentWeight = about.CurrentWeight,
-                GoalWeight = about.GoalWeight,
-                PreferrelFood = about.PreferrelFood,
-                DailyMeals = about.DailyMeals,
-                ChronicDiseases = about.ChronicDiseases,
-                Goal = about.Goal
-            };
-            
-            
-                        dbContext.Abouts.Add(about);
-
-            
-            
-            
-            
-            
-            }
-
-
-
-
-
-
-
-
-
-
-            else
-            {
-                about.Gender = about.Gender;
-                about.Age = about.Age;
-                about.Tall = about.Tall;
-                about.CurrentWeight = about.CurrentWeight;
-                about.GoalWeight = about.GoalWeight;
-                about.PreferrelFood = about.PreferrelFood;
-                about.DailyMeals = about.DailyMeals;
-                about.ChronicDiseases = about.ChronicDiseases;
-                about.Goal = about.Goal;
-                dbContext.Abouts.Update(about);
-            }
+            dbContext.Abouts.Add(about);
             await dbContext.SaveChangesAsync();
-            return true;
+            return about;
+        }
+
+        public async Task<IEnumerable<About>> GetAllAsync()
+        {
+            return await dbContext.Abouts.ToListAsync();
+        }
+
+        public async Task<About> GetByUserIdAsync(string userId)
+        {
+            var about = await dbContext.Abouts
+                  .FirstOrDefaultAsync(a => a.UserId == userId);
+
+            if (about == null) {return null; }
+                
+
+            return about;
+
+
+
+
 
         }
 
-        public async Task<About> GetAboutByUserId(string userId)
+        public async Task<Dictionary<string, IEnumerable<string>>> GetEnumChoicesAsync()
         {
-            return await dbContext.Abouts.FirstOrDefaultAsync(a => a.UserId == userId);
+
+            var choices = new Dictionary<string, IEnumerable<string>>
+    {
+        { "ChronicDiseases", Enum.GetNames(typeof(ChronicDisease)) },
+        { "FitnessGoals", Enum.GetNames(typeof(FitnessGoal)) },
+        { "MealFrequencies", Enum.GetNames(typeof(MealFrequency)) },
+        { "PreferrelFoodTypes", Enum.GetNames(typeof(PreferrelFoodType)) }
+    };
+
+            return await Task.FromResult(choices); // Still valid, but 'await' is unnecessary
+
+
+
+        }
+
+        public async Task SaveChangesAsync()
+        {
+
+          await  dbContext.Abouts.SingleAsync();
+
         }
     }
 }

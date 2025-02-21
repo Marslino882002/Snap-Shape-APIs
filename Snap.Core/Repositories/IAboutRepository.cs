@@ -11,9 +11,11 @@ namespace Snap.Core.Repositories
     {
 
 
-        Task<About> GetAboutByUserId(string userId);
-        Task<bool> CreateOrUpdateAbout(About about);
+        Task<Entities.About> GetByUserIdAsync(string userId);
+        Task<IEnumerable<Entities.About>> GetAllAsync();
+        Task<Entities.About> CreateAsync(Entities.About about);
 
-
+        Task<Dictionary<string, IEnumerable<string>>> GetEnumChoicesAsync();
+        public  Task SaveChangesAsync();
     }
 }

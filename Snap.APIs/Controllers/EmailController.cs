@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +9,11 @@ using Snap.Core.Email.Commands.SendEmail;
 
 namespace Snap.APIs.Controllers
 {
-    [Route("api/[controller]")]
+    [AllowAnonymous]
+
     [ApiController]
+    [Route("[controller]")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class EmailController(IMediator mediator) : ControllerBase
     {
         [HttpPost("Send-Email")]
@@ -20,7 +24,7 @@ namespace Snap.APIs.Controllers
         }
 
 
-        [HttpPost("Send OTP to Reset-Password")]
+        [HttpPost("Send-OTP to Reset-Password")]
         public async Task<IActionResult> SendResetPassword([FromQuery] SendResetPasswordCommand command)
         {
             var response = await mediator.Send(command);
@@ -29,7 +33,7 @@ namespace Snap.APIs.Controllers
 
 
 
-        [HttpGet("Confirm Reset Password")]
+        [HttpGet("Confirm-Reset Password")]
         public async Task<IActionResult> ConfirmResetPassword([FromQuery] ConfirmResetPasswordCommand command)
         {
             var response = await mediator.Send(command);
@@ -37,7 +41,7 @@ namespace Snap.APIs.Controllers
         }
 
 
-        [HttpPost("Reset Password")]
+        [HttpPost("Change-Password")]
         public async Task<IActionResult>ResetPassword([FromForm]ResetPasswordCommand command)
         {
             var response = await mediator.Send(command);
