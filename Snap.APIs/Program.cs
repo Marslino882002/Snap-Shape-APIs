@@ -12,7 +12,8 @@ using Snap.Repository.Data;
 using Snap.Repository.Seeders;
 using MediatR;
 using Snap.Core.Email.Commands.SendEmail;
-using System.Reflection; // Import for MediatR
+using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Snap.APIs
 {
@@ -21,6 +22,9 @@ namespace Snap.APIs
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            //     builder.WebHost.UseUrls("http://*:80");
+            builder.WebHost.UseUrls("https://localhost:7155", "http://localhost:5000");
+
             // Add services to the container.
             builder.Services.AddControllers();
 
@@ -58,6 +62,24 @@ namespace Snap.APIs
             builder.Services.AddMailServices();
             #endregion
 
+
+
+
+
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+              policy.WithOrigins("http://graduationproject-apis.runasp.net") 
+             .AllowAnyMethod()
+             .AllowAnyHeader()
+             .AllowCredentials(); 
+                });
+            });
+
+
+
             var app = builder.Build();
 
             #region Apply Migrations and Seed Data
@@ -88,15 +110,30 @@ namespace Snap.APIs
             }
 
             #endregion
+            app.UseMiddleware<ExceptionMiddleware>();
 
-            // Configure the HTTP request pipeline.
+
+          //  Configure the HTTP request pipeline.
+
             if (app.Environment.IsDevelopment())
             {
-                app.UseMiddleware<ExceptionMiddleware>();
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
+
             }
+
+            #region Enable Swagger in Production
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Snap APIs v1");
+                c.RoutePrefix = "swagger"; // 👈 This makes Swagger available at /swagger
+                //c.SwaggerEndpoint("/swagger/v1/swagger.json", "Snap APIs v1");
+                //c.RoutePrefix = string.Empty; 
+            });
+            #endregion
+            // Configure Middleware
+            app.UseCors("AllowAll");
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
@@ -105,6 +142,74 @@ namespace Snap.APIs
             app.MapControllers();
 
             app.Run();
+            
         }
     }
 }
+/*
+ 
+ app.UseMiddleware<ExceptionMiddleware>();
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            app.UseCors("AllowAll");
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.MapControllers();
+
+            app.Run(); 
+ 
+ 
+ 
+ 
+ 
+ 
+ */
+
+/*// ✅ Apply Middleware
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            // ✅ Apply CORS Before Other Middleware
+            app.UseCors("AllowAll");
+
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.MapControllers();
+
+            app.Run();
+
+
+
+
+
+
+
+
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=db14361.public.databaseasp.net; Database=db14361; User Id=db14361; Password=j@8C!3DfP-c7; Encrypt=False;"
+  },
+  "JWT": {
+    "key": "ThisIsAStrongSecretKeyForJWT123!",
+    "ValidIssuer": "https://localhost:7155",
+    "ValidAudience": "MySecureKey",
+    "DurationInDays": "2"
+
+  }
+ 
+}
+
+*/

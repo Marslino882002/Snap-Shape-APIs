@@ -1,4 +1,5 @@
-﻿using Snap.Core.Entities;
+﻿using Snap.Core.Constants;
+using Snap.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace Snap.Core.Repositories
     {
 
 
-        Task<Entities.About> GetByUserIdAsync(string userId);
-        Task<IEnumerable<Entities.About>> GetAllAsync();
-        Task<Entities.About> CreateAsync(Entities.About about);
+        public Task<int> AddAsync(Entities.About term);
+        //public Task DeleteAsync(int id);
+        //public Task<List<Entities.About>> GetAllAsync(Global.ChronicDisease type);
 
-        Task<Dictionary<string, IEnumerable<string>>> GetEnumChoicesAsync();
+        //public Task Update(Entities.About term);
         public  Task SaveChangesAsync();
     }
 }

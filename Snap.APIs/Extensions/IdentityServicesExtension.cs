@@ -23,10 +23,10 @@ namespace Snap.APIs.Extensions
 
 
             Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-        
-        
-        
-        return Services;
+
+
+
+            return Services;
         
         
         
