@@ -22,7 +22,7 @@ namespace Snap.APIs.Extensions
                 .AddEntityFrameworkStores<SnapDbContext>();
 
 
-            Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+           // Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
 
 

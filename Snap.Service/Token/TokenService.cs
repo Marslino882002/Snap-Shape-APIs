@@ -30,6 +30,8 @@ namespace Snap.Service.Token
 
             var AuthClaims = new List<Claim>()
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // This is required!
+
                 new Claim(ClaimTypes.GivenName , user.DispalyName),
 
                 new Claim(ClaimTypes.Email , user.Email)

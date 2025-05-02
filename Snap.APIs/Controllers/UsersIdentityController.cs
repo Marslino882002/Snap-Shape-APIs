@@ -6,6 +6,8 @@ using Snap.Core.DTOs;
 using Snap.APIs.Errors;
 using Snap.Core.Entities;
 using Snap.Core.Services;
+using Snap.Service.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Snap.APIs.Controllers
 {
@@ -16,14 +18,18 @@ namespace Snap.APIs.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ITokenService _tokenService;
+        private readonly ICurrentUserService _currentUserService;
 
         public UsersIdentityController(UserManager<User>userManager ,
             SignInManager<User> signInManager , 
-            ITokenService tokenService)
+            ITokenService tokenService ,
+            ICurrentUserService currentUserService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
+            _currentUserService = currentUserService;
+
         }
 
 
@@ -37,13 +43,20 @@ namespace Snap.APIs.Controllers
 
             var user = new User()
             {
-                DispalyName = model.DispalyName,
+                DispalyName = model.DisplayName,
                 Email = model.Email,
                 UserName = model.Email.Split('@')[0]
             };
 
             var result = await _userManager.CreateAsync(user, model.password);
-            if (!result.Succeeded) { return BadRequest(new ApiResponse(400)); }
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description).ToArray();
+                return BadRequest(new ApiValidationErrorResponse
+                {
+                    Erorrs = errors
+                });
+            }
 
             var ReturnedUser = new UserDto()
             {
@@ -74,8 +87,50 @@ namespace Snap.APIs.Controllers
           }
                 
                 
-                );
+            );
 
         }
+
+        [HttpGet("profile")]
+
+        public async Task<ActionResult<UserDto>> GetCurrentUserProfile()
+        {
+            try
+            {
+                var user = await _currentUserService.GetUserAsync();  // Get the full user object
+
+                // Map User to UserDto if necessary
+                var userDto = new UserDto()
+                {
+                    DispalyName = user.DispalyName,
+                    Email = user.Email,
+                    Token = await _tokenService.CreateTokenAsync(user, _userManager)
+                };
+
+                return Ok(userDto);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized("User is not authorized or not logged in.");
+            }
+        }
+
+
+
+        [HttpGet("current-user-id")]
+        [Authorize]
+        public ActionResult<int> GetCurrentUserId()
+        {
+            try
+            {
+                var userId = _currentUserService.GetUserId();  // Get the current user's ID
+                return Ok(userId);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized("User is not authorized or not logged in.");
+            }
+        }
+
     }
 }

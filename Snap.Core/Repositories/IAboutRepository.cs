@@ -12,11 +12,11 @@ namespace Snap.Core.Repositories
     {
 
 
-        public Task<int> AddAsync(Entities.About term);
+        Task<int> AddAsync(Entities.About about);
         //public Task DeleteAsync(int id);
         //public Task<List<Entities.About>> GetAllAsync(Global.ChronicDisease type);
 
         //public Task Update(Entities.About term);
-        public  Task SaveChangesAsync();
+        public Task SaveChangesAsync();
     }
 }

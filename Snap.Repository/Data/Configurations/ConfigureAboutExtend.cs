@@ -17,9 +17,13 @@ namespace Snap.Repository.Data.Configurations
             builder.HasKey(a => a.Id);
 
             // Configure properties
+            //builder.Property(a => a.Gender)
+            //       .IsRequired()
+            //       .HasMaxLength(50);
             builder.Property(a => a.Gender)
-                   .IsRequired()
+                   .HasConversion<string>()
                    .HasMaxLength(50);
+
 
             builder.Property(a => a.Age)
                    .IsRequired();

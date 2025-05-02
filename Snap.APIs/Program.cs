@@ -14,6 +14,9 @@ using MediatR;
 using Snap.Core.Email.Commands.SendEmail;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi.Models;
+using Snap.Core.Abouts;
+using Microsoft.Data.SqlClient;
 
 namespace Snap.APIs
 {
@@ -34,15 +37,66 @@ namespace Snap.APIs
             );
 
             // Configure Identity Services
-            builder.Services.AddIdentityServices();
+            builder.Services.AddIdentityServices();         // handles identity setup
+            builder.Services.AddAuthenticationService(builder.Configuration); // handles JWT config
             builder.Services.AddAboutServices();
-
+            
 
             // ✅ Add MediatR
             builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<SendEmailCommand>());
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen( c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Title = "Snap & Shape API",
+                        Version = "v1"
+                    });
+
+                    //// 🔐 JWT Bearer Auth Setup
+                    c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+                    {
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer", // <- this makes Swagger add 'Bearer ' automatically
+                        BearerFormat = "JWT",
+                        In = ParameterLocation.Header,
+                        Description = "Paste your JWT token here. No need to type 'Bearer'."
+                    });
+
+                    // Apply JWT globally
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+{
+    {
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Id = "bearerAuth",
+                Type = ReferenceType.SecurityScheme
+            }
+        },
+        Array.Empty<string>()
+    }
+});
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                );
             builder.Services.Configure<ApiBehaviorOptions>(
                 options => {
                     options.InvalidModelStateResponseFactory = (actionContext) =>
@@ -60,6 +114,10 @@ namespace Snap.APIs
 
             #region DI
             builder.Services.AddMailServices();
+            builder.Services.AddCurrentUserService();   
+            builder.Services.AddAutoMapper(typeof(AboutProfile));
+            builder.Services.AddScrapedProductServices();
+            builder.Services.AddAiModelServices();  
             #endregion
 
 
@@ -113,21 +171,20 @@ namespace Snap.APIs
             app.UseMiddleware<ExceptionMiddleware>();
 
 
-          //  Configure the HTTP request pipeline.
+            //  Configure the HTTP request pipeline.
 
             if (app.Environment.IsDevelopment())
             {
-
+                app.UseDeveloperExceptionPage();
             }
+
 
             #region Enable Swagger in Production
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Snap APIs v1");
-                c.RoutePrefix = "swagger"; // 👈 This makes Swagger available at /swagger
-                //c.SwaggerEndpoint("/swagger/v1/swagger.json", "Snap APIs v1");
-                //c.RoutePrefix = string.Empty; 
+                c.RoutePrefix = "swagger"; // this makes Swagger available at /swagger
             });
             #endregion
             // Configure Middleware

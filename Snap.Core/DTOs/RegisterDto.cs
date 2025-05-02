@@ -14,7 +14,7 @@ namespace Snap.Core.DTOs
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        public string DispalyName { get; set; }
+        public string DisplayName { get; set; }  // ✅ Correct spelling
         [Required]
         [RegularExpression("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,20}$",
             ErrorMessage = "Password must be 6-20 characters long," +

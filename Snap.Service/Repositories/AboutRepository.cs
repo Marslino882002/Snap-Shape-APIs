@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Snap.Core.Entities;
 using Snap.Core.Entities.Enums;
 using Snap.Core.Repositories;
+using Snap.Core.Services;
 using Snap.Repository.Data;
 using System;
 using System.Collections.Generic;
@@ -13,55 +14,109 @@ using System.Threading.Tasks;
 
 namespace Snap.Service.Repositories
 {
-    public class AboutRepository(SnapDbContext dbContext, UserManager<User> userManager , ILogger
-        <AboutRepository> _logger) : IAboutRepository
+    public class AboutRepository(SnapDbContext dbContext, UserManager<User> userManager, ILogger
+        <AboutRepository> _logger , ICurrentUserService _currentUser) : IAboutRepository
     {
-        public async Task<int> AddAsync(About term)
+        public async Task<int> AddAsync(About about)
         {
-            try
-            {
-                // Make sure the UserId exists in AspNetUsers (if you're using foreign key constraints)
-                var user = await dbContext.Users.FindAsync(term.UserId);
-                if (user == null)
-                {
-                    throw new InvalidOperationException("User with the given UserId does not exist.");
-                }
 
-                // Add the About entity and save changes
-                await dbContext.Abouts.AddAsync(term);
-                await dbContext.SaveChangesAsync();
+            dbContext.Abouts.Add(about);
+            await dbContext.SaveChangesAsync();
+            return about.Id;
 
-                return term.Id;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception for debugging purposes
-                // (Ensure you have logging set up in your app)
-                _logger.LogError(ex, "An error occurred while adding About entity.");
-                throw;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }
         }
+
+
+
 
         public async Task SaveChangesAsync()
         {
 
-          await  dbContext.Abouts.SingleAsync();
+            await dbContext.Abouts.SingleAsync();
 
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ 
+ 
+ 
+  try
+            {
+                // 1) Get the current user’s ID
+                var userId = _currentUser.GetUserId();
+
+                // 2) Ensure that user exists
+                var user = await userManager.FindByIdAsync(userId.ToString());
+                if (user == null)
+                    throw new InvalidOperationException($"User '{userId}' not found.");
+
+                // 3) Attach the userId to your About entity
+                term.UserId = userId.ToString();
+
+                // 4) Upsert logic
+                var existing = await dbContext.Abouts
+                                    .SingleOrDefaultAsync(a => a.UserId == userId.ToString());
+
+                if (existing == null)
+                {
+                    await dbContext.Abouts.AddAsync(term);
+                }
+                else
+                {
+                    existing.Age = term.Age;
+                    existing.Tall = term.Tall;
+                    existing.CurrentWeight = term.CurrentWeight;
+                    existing.GoalWeight = term.GoalWeight;
+                    existing.Gender = term.Gender;
+                    existing.PreferrelFood = term.PreferrelFood;
+                    existing.DailyMeals = term.DailyMeals;
+                    existing.ChronicDiseases = term.ChronicDiseases;
+                    existing.Goal = term.Goal;
+                }
+
+                // 5) Save & return the record’s ID
+                await dbContext.SaveChangesAsync();
+                return existing?.Id ?? term.Id;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in AddAsync for About.");
+                throw;
+            }
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ */

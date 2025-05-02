@@ -37,6 +37,8 @@ namespace Snap.Repository.Data
 // DbSet properties for each entity
         public DbSet<User> Users { get; set; }
         public DbSet<About> Abouts { get; set; }
+        public DbSet<ScrapedProduct> ScrapedProducts { get; set; }
+        public DbSet<WeightCalorieRecord> weightCalorieRecords { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   
