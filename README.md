@@ -2,7 +2,6 @@
 
 **Snap & Shape** is a cross-platform mobile application designed to help users achieve their health and fitness goals through personalized exercise plans, meal recommendations, calorie tracking, and AI-powered food recognition.
 
-![Snap & Shape](./d076ea52-0f53-4bfb-bd23-b7bf090f7269.png)
 
 ---
 
@@ -78,7 +77,7 @@ Snap & Shape aims to:
 
 A very special thanks to **Sama Amr Mohamed** – a clever and creative developer who played a vital role in the success of this project. Her problem-solving skills, attention to detail, and innovative thinking consistently pushed the project forward.
 
-We strongly believe Sama has a **bright future ahead in the tech industry**, and this is just the beginning of her journey as a standout developer. 🌟
+We strongly believe Sama has a **bright future ahead in the tech industry**, and this is just the beginning of her journey as a standout developer🌟
 
 ---
 
