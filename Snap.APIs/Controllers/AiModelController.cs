@@ -35,7 +35,25 @@ namespace Snap.APIs.Controllers
 
 
 
+        [HttpGet("predict-weight")]
+        public async Task<ActionResult<PredictionResultDto>> GetPredictedWeight()
+        {
+            var result = new PredictionResultDto
+            {
+                PredictedWeight = new List<double>
+            {
+                107.61966705322266,
+                107.42593383789062,
+                107.20130920410156,
+                106.94723510742188,
+                106.82571411132812,
+                106.70574951171875,
+                106.56610870361328
+            }
+            };
 
+            return Ok(await Task.FromResult(result));
+        }
 
 
 

@@ -52,6 +52,7 @@ namespace Snap.APIs
                     {
                         Title = "Snap & Shape API",
                         Version = "v1"
+
                     });
 
                     //// 🔐 JWT Bearer Auth Setup
@@ -117,7 +118,9 @@ namespace Snap.APIs
             builder.Services.AddCurrentUserService();   
             builder.Services.AddAutoMapper(typeof(AboutProfile));
             builder.Services.AddScrapedProductServices();
-            builder.Services.AddAiModelServices();  
+            builder.Services.AddAiModelServices();
+            builder.Services.AddFoodDetectionServices();
+            builder.Services.AddFoodDetectionServicesV2();
             #endregion
 
 

@@ -4,6 +4,7 @@ using EntityFrameworkCore.EncryptColumn.Util;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Snap.Core.DTOs;
 using Snap.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,10 @@ namespace Snap.Repository.Data
         public DbSet<User> Users { get; set; }
         public DbSet<About> Abouts { get; set; }
         public DbSet<ScrapedProduct> ScrapedProducts { get; set; }
-        public DbSet<WeightCalorieRecord> weightCalorieRecords { get; set; }
-
+        public DbSet<WeightCalorieRecord> WeightCalorieRecords { get; set; }
+        public DbSet<FoodDetectionResult> FoodDetectionResults { get; set; }
+        public DbSet<FoodItem> foodItems { get; set; }
+        public DbSet<FoodDetectionResultV2> foodDetectionResultV2s { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   
             base.OnModelCreating(modelBuilder);

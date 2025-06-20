@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Snap.Repository.Data;
 
@@ -11,9 +12,11 @@ using Snap.Repository.Data;
 namespace Snap.Repository.Migrations
 {
     [DbContext(typeof(SnapDbContext))]
-    partial class SnapDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508210024_addFoodDetectionResult")]
+    partial class addFoodDetectionResult
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,58 +236,6 @@ namespace Snap.Repository.Migrations
                     b.ToTable("FoodDetectionResults", (string)null);
                 });
 
-            modelBuilder.Entity("Snap.Core.Entities.FoodDetectionResultV2", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.HasKey("Id");
-
-                    b.ToTable("foodDetectionResultV2s");
-                });
-
-            modelBuilder.Entity("Snap.Core.Entities.FoodItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Calories")
-                        .HasColumnType("decimal(6,2)");
-
-                    b.Property<int?>("FoodDetectionResultV2Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Freshness")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<decimal>("WeightGrams")
-                        .HasColumnType("decimal(6,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FoodDetectionResultV2Id");
-
-                    b.ToTable("foodItems");
-                });
-
             modelBuilder.Entity("Snap.Core.Entities.ScrapedProduct", b =>
                 {
                     b.Property<int>("Id")
@@ -482,19 +433,6 @@ namespace Snap.Repository.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Snap.Core.Entities.FoodItem", b =>
-                {
-                    b.HasOne("Snap.Core.Entities.FoodDetectionResultV2", null)
-                        .WithMany("Items")
-                        .HasForeignKey("FoodDetectionResultV2Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Snap.Core.Entities.FoodDetectionResultV2", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Snap.Core.Entities.User", b =>

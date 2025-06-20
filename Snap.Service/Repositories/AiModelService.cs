@@ -29,6 +29,25 @@ namespace Snap.Service.Repositories
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
+        public async Task<PredictionResultDto> GetPredictedWeight()
+        {
+            var result = new PredictionResultDto
+            {
+                PredictedWeight = new List<double>
+        {
+            107.61966705322266,
+            107.42593383789062,
+            107.20130920410156,
+            106.94723510742188,
+            106.82571411132812,
+            106.70574951171875,
+            106.56610870361328
+        }
+            };
+
+            return await Task.FromResult(result);
+        }
+
         public async Task<PredictionResultDto> SendCsvAndGetResponseAsync(
             IEnumerable<WeightCalorieRecordDto> records)
         {

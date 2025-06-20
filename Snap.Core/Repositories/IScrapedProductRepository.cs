@@ -15,6 +15,7 @@ namespace Snap.Core.Repositories
 
 
 
+        Task<List<ScrapedProduct>> ScrapeFromUrlAsync(string categoryUrl);
 
 
 

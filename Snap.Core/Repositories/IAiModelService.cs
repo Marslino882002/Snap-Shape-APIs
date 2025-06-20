@@ -14,6 +14,8 @@ namespace Snap.Core.Repositories
 
 
 
+        public Task<PredictionResultDto> GetPredictedWeight();
+
 
     }
 }
