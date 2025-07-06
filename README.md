@@ -2,34 +2,40 @@
 
 **Snap & Shape** is a cross-platform mobile application designed to help users achieve their health and fitness goals through personalized exercise plans, meal recommendations, calorie tracking, and AI-powered food recognition.
 
-
 ---
 
 ## 🎯 Project Goals
 
 Snap & Shape aims to:
-- Provide **personalized fitness plans** based on user input and preferences
-- Recommend meals tailored to individual **health conditions and goals**
-- Use **AI to recognize food** from images and estimate calories
+- Provide **personalized fitness plans** based on user input and preferences  
+- Recommend meals tailored to individual **health conditions and goals**  
+- Use **AI to recognize food** from images and estimate calories  
 - Track **daily caloric intake** and **exercise progress**
+
+---
+
+## 🚀 Live Demo
+
+- 🧪 **Swagger API Testing Interface**:  
+  [http://graduationproject-apis.runasp.net/swagger/index.html](http://graduationproject-apis.runasp.net/swagger/index.html)
 
 ---
 
 ## 🧠 Powered By
 
-- **Flutter** (cross-platform UI framework)
-- **.NET Core** for backend Web API
-- **AI & Machine Learning** models for food recognition and calorie estimation
+- **Flutter** (cross-platform UI framework)  
+- **.NET Core** for backend Web API  
+- **AI & Machine Learning** models for food recognition and calorie estimation  
 - **Microsoft SQL Server** for database management
 
 ---
 
 ## 📦 Features
 
-- 🔍 **AI Food Recognition** – Snap a photo, and our model estimates the food type and calories.
-- 🥗 **Smart Meal Suggestions** – Based on diet type, fitness goal, and any chronic diseases.
-- 🧘 **Fitness Recommendations** – Personalized plans for losing, gaining, or maintaining weight.
-- 📊 **Health Tracking** – Track your current stats, progress toward goals, and food logs.
+- 🔍 **AI Food Recognition** – Snap a photo, and our model estimates the food type and calories.  
+- 🥗 **Smart Meal Suggestions** – Based on diet type, fitness goal, and any chronic diseases.  
+- 🧘 **Fitness Recommendations** – Personalized plans for losing, gaining, or maintaining weight.  
+- 📊 **Health Tracking** – Track your current stats, progress toward goals, and food logs.  
 - 👨‍⚕️ **User Profile Customization** – Chronic disease status, food preferences, and gender-aware recommendations.
 
 ---
@@ -49,9 +55,9 @@ Snap & Shape aims to:
 
 ## 📁 Project Structure
 
-- `frontend/` – Flutter mobile app
-- `backend/` – .NET Core Web API
-- `ai-model/` – AI model scripts and endpoints
+- `frontend/` – Flutter mobile app  
+- `backend/` – .NET Core Web API  
+- `ai-model/` – AI model scripts and endpoints  
 - `docs/` – Research paper and documentation
 
 ---
@@ -59,7 +65,7 @@ Snap & Shape aims to:
 ## 🔗 Related Repositories
 
 - 🌐 **Flutter Frontend Repository**:  
-  [github.com/ArsanyMorcosNageh/Snap_and_Shape](https://github.com/ArsanyMorcosNageh/Snap_and_Shape)
+  [https://github.com/ArsanyMorcosNageh/Snap_and_Shape](https://github.com/ArsanyMorcosNageh/Snap_and_Shape)
 
 ---
 
@@ -75,9 +81,9 @@ Snap & Shape aims to:
 
 ## 🙏 Special Thanks
 
-A very special thanks to **Sama Amr Mohamed** – a clever and creative developer who played a vital role in the success of this project. Her problem-solving skills, attention to detail, and innovative thinking consistently pushed the project forward.
+A very special thanks to **Sama Amr Mohamed** – a clever and creative developer who played a vital role in the success of this project. Her problem-solving skills, attention to detail, and innovative thinking consistently pushed the project forward.  
 
-We strongly believe Sama has a **bright future ahead in the tech industry**, and this is just the beginning of her journey as a standout developer🌟
+We strongly believe Sama has a **bright future ahead in the tech industry**, and this is just the beginning of her journey as a standout developer 🌟
 
 ---
 
@@ -90,5 +96,3 @@ This project is part of our graduation research and is **not for commercial use*
 ## 😂 Fun Fact
 
 > Final Chapter Title: **“We Came, We Coded, We Cried”**
-
----
